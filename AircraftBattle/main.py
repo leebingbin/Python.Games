@@ -1,8 +1,10 @@
 # -*- coding: UTF-8 -*-
 
 import pygame
+import time
 from pygame.locals import *
 from plane import *
+from bullet import *
 
 
 def start():  # 开始游戏
@@ -13,10 +15,16 @@ def start():  # 开始游戏
     background = pygame.image.load(image_file_path).convert()
     # 创建一个飞机对象
     hero_plane = HeroPlane(screen)
+    # 创建一个敌人飞机
+    enemy_plane = EnemyPlane(screen)
     # 把背景图片放到窗口中显示
     while True:
         screen.blit(background, (0, 0))
         hero_plane.display()
+        hero_plane.launch_bullet()
+        enemy_plane.display()
+        enemy_plane.move()
+        enemy_plane.launch_bullet()
         # 判断是否是点击了退出按钮
         for event in pygame.event.get():
             if event.type == QUIT:
@@ -33,6 +41,8 @@ def start():  # 开始游戏
                     hero_plane.move_right()
                 elif event.key == K_SPACE:
                     print("space")
+        # 通过延时的方式，来降低这个 while 循环的循环速度，从而价降低了CPU占用率
+        time.sleep(0.01)
         pygame.display.update()
 
 
